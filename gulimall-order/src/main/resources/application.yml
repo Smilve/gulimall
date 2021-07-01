@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    username: root
+    password: roottoor
+    url: jdbc:mysql://47.98.137.243:3306/gulimall_oms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+    name: gulimall-order
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
+  global-config:
+    db-config:
+      id-type: auto   # 主键生成策略，自增   也可以在entity类的 @TableId配置
+server:
+  port: 9000
