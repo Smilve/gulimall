@@ -15,5 +15,10 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto   # 主键生成策略，自增   也可以在entity类的 @TableId配置
+      logic-delete-value: 1 # 逻辑已删除（默认为1）
+      logic-not-delete-value: 0 #逻辑未删除（默认为0）
 server:
   port: 10001
+logging:
+  level:
+    com.lvboaa.gulimall: debug

@@ -9,10 +9,26 @@ spring:
           uri: http://www.baidu.com
           predicates:
             - Query=url,baidu        # 断言 Query=k,v 就是 url路径带参数 ?k=v
+
         - id: qq_route
           uri: http://www.qq.com
           predicates:
             - Query=url,qq
+
+        - id: product_route
+          uri: lb://gulimall-product    # 默认按前后顺序优先匹配，细粒度的匹配规则放在上面
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        - id: admin_route
+          uri: lb://renren-fast      # loadbalance 将请求路由给renren-fast 路由
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
   application:
     name: gulimall-gateway
 server:
