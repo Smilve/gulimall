@@ -1,24 +1,32 @@
 package com.lvboaa.gulimall.product;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lvboaa.gulimall.product.entity.BrandEntity;
+import com.aliyun.oss.OSS;
 import com.lvboaa.gulimall.product.service.BrandService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 @SpringBootTest
 class GulimallProductApplicationTests {
 
+
+    @Autowired
+    private OSS ossClient;
+
+    @Test
+    public String home() throws FileNotFoundException {
+        ossClient.putObject("smilve", "1.jpg", new FileInputStream("D:\\1.jpg"));
+        return "upload success";
+    }
     @Autowired
     BrandService brandService;
     @Test
-    void contextLoads() {
-//        BrandEntity brandEntity = new BrandEntity();
-//        brandEntity.setName("华为");
-//        brandService.save(brandEntity);
-//        System.out.println("保存成功");
-        brandService.list(new QueryWrapper<BrandEntity>().eq("brand_id",1L)).forEach(System.out::println);
+    void contextLoads() throws FileNotFoundException {
+
+
     }
 
 }
