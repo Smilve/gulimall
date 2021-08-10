@@ -9,7 +9,6 @@ spring:
           uri: http://www.baidu.com
           predicates:
             - Query=url,baidu        # 断言 Query=k,v 就是 url路径带参数 ?k=v
-
         - id: qq_route
           uri: http://www.qq.com
           predicates:
@@ -28,6 +27,14 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+#      globalcors:
+#        cors-configurations:
+#           允许https://docs.spring.io路径下所有GET请求跨域  配置跨域
+#          '[/**]':
+#            allowedOrigins: "https://docs.spring.io"
+#            allowedMethods:
+#              - GET
+
 
   application:
     name: gulimall-gateway

@@ -2,17 +2,17 @@ spring:
   datasource:
     username: root
     password: roottoor
-    url: jdbc:mysql://47.98.137.243:3306/gulimall_pms
+    url: jdbc:mysql://47.98.137.243:3306/gulimall_pms?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-    alicloud:
-      access-key: LTAI5tSAk4xmqeMXc6f3xd
-      secret-key: HPG92M7qM1nFWcixV6GZpytcV8e8
-      oss:
-        endpoint: oss-cn-chengdu.aliyuncs.com
+#    alicloud:
+#      access-key: LTAI5tSAk4xmqeMXc6f3xd
+#      secret-key: HPG92M7qM1nFWcixV6GZpytcV8e8
+#      oss:
+#        endpoint: oss-cn-chengdu.aliyuncs.com
   application:
     name: gulimall-product
 mybatis-plus:

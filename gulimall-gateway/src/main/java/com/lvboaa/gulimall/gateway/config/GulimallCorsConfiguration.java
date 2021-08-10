@@ -19,10 +19,14 @@ public class GulimallCorsConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
 
-        //配置跨域
+        // 配置跨域
+        // 任意请求头
         configuration.addAllowedHeader("*");
+        // 任意方法
         configuration.addAllowedMethod("*");
+        // 任意请求来源
         configuration.addAllowedOrigin("*");
+        // 允许携带cookie跨域
         configuration.setAllowCredentials(true);
 
         source.registerCorsConfiguration("/**",configuration);
