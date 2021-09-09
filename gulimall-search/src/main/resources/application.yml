@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.98.137.243:8848
+  application:
+    name: gulimall-search
+server:
+  port: 4000
+es:
+  server:
+    url: 47.98.137.243
+    port: 9200
+    scheme: http

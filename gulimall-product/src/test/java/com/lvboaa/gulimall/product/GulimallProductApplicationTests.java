@@ -3,14 +3,21 @@ package com.lvboaa.gulimall.product;
 //import com.aliyun.oss.OSS;
 import com.lvboaa.gulimall.product.service.BrandService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.UUID;
 
-@SpringBootTest
-class GulimallProductApplicationTests {
+@RunWith(value= SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes={GulimallProductApplication.class})
+public class GulimallProductApplicationTests {
 
 
 //    @Autowired
@@ -21,12 +28,22 @@ class GulimallProductApplicationTests {
 //        ossClient.putObject("smilve", "1.jpg", new FileInputStream("D:\\1.jpg"));
 //        return "upload success";
 //    }
+//    @Autowired
+//    BrandService brandService;
+
     @Autowired
-    BrandService brandService;
+    StringRedisTemplate stringRedisTemplate;
+
     @Test
-    void contextLoads() throws FileNotFoundException {
+    public void contextLoads() throws FileNotFoundException {
 
 
     }
 
+    @Test
+    public void testRedis(){
+        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+        ops.set("hello","world"+ UUID.randomUUID().toString());
+        System.out.println(ops.get("hello"));
+    }
 }

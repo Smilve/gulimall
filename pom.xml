@@ -21,6 +21,7 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>gulimall-gateway</module>
+        <module>gulimall-search</module>
     </modules>
 
     <!--  解决maven刷新java compiler版本改变  -->

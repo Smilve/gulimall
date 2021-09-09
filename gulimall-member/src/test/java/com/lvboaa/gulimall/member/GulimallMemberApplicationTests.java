@@ -3,11 +3,14 @@ package com.lvboaa.gulimall.member;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.function.Consumer;
+
 @SpringBootTest
-class GulimallMemberApplicationTests {
+public class GulimallMemberApplicationTests {
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+
     }
 
 }

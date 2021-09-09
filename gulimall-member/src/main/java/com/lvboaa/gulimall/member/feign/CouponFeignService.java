@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date: 2021/7/1 21:56
  * @description:
  */
-
+// 服务名
 @FeignClient("gulimall-coupon")
 public interface CouponFeignService {
 
+    // 对应路径
     @RequestMapping("/coupon/coupon/member/list")
-    public R memberCoupons();
+    R memberCoupons();
 
 }
