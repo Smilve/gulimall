@@ -3,6 +3,8 @@ package com.lvboaa.gulimall.product.service.impl;
 import com.mysql.cj.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,6 +49,13 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 queryWrapper
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<Long> selectSearchAttrs(List<Long> attrIds) {
+        List<Long> searchAttrIds = this.baseMapper.selectSearchAttrIds(attrIds);
+
+        return searchAttrIds;
     }
 
 }

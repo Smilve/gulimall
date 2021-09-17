@@ -5,10 +5,12 @@ spring:
         server-addr: 47.98.137.243:8848
   application:
     name: gulimall-search
+  thymeleaf:
+    cache: false
 server:
   port: 4000
 es:
   server:
-    url: 47.98.137.243
-    port: 9200
+    url: 127.0.0.1
+   #port: 9200
     scheme: http

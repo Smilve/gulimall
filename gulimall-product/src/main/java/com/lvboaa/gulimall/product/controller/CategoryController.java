@@ -1,21 +1,15 @@
 package com.lvboaa.gulimall.product.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lvboaa.gulimall.product.entity.CategoryEntity;
 import com.lvboaa.gulimall.product.service.CategoryService;
-import com.lvboaa.common.utils.PageUtils;
 import com.lvboaa.common.utils.R;
 
 
@@ -42,6 +36,7 @@ public class CategoryController {
 
         return R.ok().put("data", entities);
     }
+
 
 
     /**
@@ -84,6 +79,16 @@ public class CategoryController {
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
 		categoryService.updateById(category);
+
+        return R.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/testUpdate")
+    public R testUpdate(){
+        categoryService.testUpdate();
 
         return R.ok();
     }

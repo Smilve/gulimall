@@ -27,6 +27,16 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+        - id: gulimall_host_route
+          uri: lb://gulimall-product
+          predicates:
+            - Host=gulimall.com
+
+        - id: search_gulimall_host_route
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
 #      globalcors:
 #        cors-configurations:
 #           允许https://docs.spring.io路径下所有GET请求跨域  配置跨域 可以用*代表所有请求和所有路径

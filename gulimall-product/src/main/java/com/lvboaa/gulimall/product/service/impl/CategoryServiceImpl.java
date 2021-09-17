@@ -5,7 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.lvboaa.gulimall.product.vo.Catelog2Vo;
+import io.lettuce.core.RedisClient;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -36,6 +43,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private RedissonClient redisson;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -47,6 +57,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return new PageUtils(page);
     }
 
+    // 每一个需要缓存的数据都需要放到那个名字下(主要是缓存的分区(按照业务类型分))
+    // 代表当前方法的结果需要缓存，如果缓存中有，方法不调用，缓存中没有，会调用方法查询数据库
+    @Cacheable(value = "listTree", key = "#root.method.name")
     @Override
     public List<CategoryEntity> listWithTree() {
         // 存入redis使用json格式字符串，可以跨平台兼容
@@ -60,7 +73,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         String list = redisTemplate.opsForValue().get("listWithTree");
         if (StringUtils.isEmpty(list)) {
             System.out.println("缓存不命中，将要查询数据库......");
-            return getListWithTreeWithRedisLock();
+            return getListWithTreeWithRedissonLock();
         }
         System.out.println("缓存命中，直接返回........");
         entities = JSON.parseObject(list, new TypeReference<List<CategoryEntity>>() {
@@ -99,6 +112,25 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             }
             return getListWithTreeWithRedisLock();
         }
+    }
+
+    /**
+     * redisson分布式锁
+     * @return
+     */
+    public List<CategoryEntity> getListWithTreeWithRedissonLock() {
+
+        // 锁的名字就相当于一把锁，锁的粒度越小，越细就越快，越大就越慢
+        RLock lock = redisson.getLock("listWithTree-lock");
+        lock.lock();
+
+        List<CategoryEntity> data;
+        try{
+            data = getDataFromDB();
+        }finally {
+            lock.unlock();
+        }
+        return data;
     }
 
     public List<CategoryEntity> getListWithTreeWithLocalLock() {
@@ -148,7 +180,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         // 放入返回也要进行加锁同步，不然会多次访问数据库
         // 缓存中没有需要把从数据库读出来的数据存入缓存，需要将对象转为json格式  可以跨平台兼容
-        redisTemplate.opsForValue().set("listWithTree", JSON.toJSONString(entities), 5, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("listWithTree", JSON.toJSONString(entities), 5, TimeUnit.HOURS);
         return entities;
     }
 
@@ -166,6 +198,60 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         // 逻辑删除
         baseMapper.deleteBatchIds(catIdList);
+    }
+
+    @CacheEvict(value = "listTree", key = "'listWithTree'")
+    @Override
+    public void testUpdate() {
+
+    }
+
+    @Override
+    public List<CategoryEntity> getLevel1Category() {
+        List<CategoryEntity> entities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
+        return entities;
+    }
+
+    @Override
+    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        Map<String, List<Catelog2Vo>> entities;
+        String catalogJson = redisTemplate.opsForValue().get("catalogJson");
+        if (StringUtils.isEmpty(catalogJson)) {
+            System.out.println("缓存不命中，将要查询数据库......");
+            return getCatalogJson1();
+        }
+        System.out.println("缓存命中，直接返回........");
+        entities = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {
+        });
+
+        return entities;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCatalogJson1() {
+        List<CategoryEntity> level1Categorys = getLevel1Category();
+        Map<String, List<Catelog2Vo>> collect = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+            // 每个一级分类，查到这个一级分类的二级分类
+            List<CategoryEntity> entities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", v.getCatId()));
+            List<Catelog2Vo> catelog2Vos = null;
+            if (entities != null) {
+                catelog2Vos = entities.stream().map(l2 -> {
+                    List<CategoryEntity> catelog3 = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", l2.getCatId()));
+                    List<Catelog2Vo.Catelog3Vo> catelog3Vos = null;
+                    if (catelog3!= null){
+                        catelog3Vos = catelog3.stream().map(l3 -> {
+                            Catelog2Vo.Catelog3Vo catelog3Vo = new Catelog2Vo.Catelog3Vo(l2.getCatId().toString(),l3.getCatId().toString(),l3.getName());
+                            return catelog3Vo;
+                        }).collect(Collectors.toList());
+
+                    }
+                    Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), catelog3Vos, l2.getCatId().toString(), l2.getName());
+                    return catelog2Vo;
+                }).collect(Collectors.toList());
+            }
+            return catelog2Vos;
+        }));
+        redisTemplate.opsForValue().set("catalogJson", JSON.toJSONString(collect), 5, TimeUnit.HOURS);
+        return collect;
     }
 
     public void getDelIds(Long id, List<CategoryEntity> all) {

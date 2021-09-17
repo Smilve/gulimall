@@ -18,6 +18,15 @@ spring:
 #        endpoint: oss-cn-chengdu.aliyuncs.com
   application:
     name: gulimall-product
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+      key-prefix: CACHE_
+      use-key-prefix: true
+      cache-null-values: true # 是否缓存空值，防止缓存穿透
+  thymeleaf:
+    cache: false
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:

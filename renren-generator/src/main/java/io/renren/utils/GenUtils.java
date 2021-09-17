@@ -42,7 +42,7 @@ public class GenUtils {
 
         templates.add("template/Service.java.vm");
         templates.add("template/ServiceImpl.java.vm");
-        templates.add("template/Controller.java.vm");
+        templates.add("template/controller.java.vm");
         templates.add("template/Dao.java.vm");
 
         templates.add("template/index.vue.vm");
@@ -321,8 +321,8 @@ public class GenUtils {
             return packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
         }
 
-        if (template.contains("Controller.java.vm")) {
-            return packagePath + "controller" + File.separator + className + "Controller.java";
+        if (template.contains("controller.java.vm")) {
+            return packagePath + "controller" + File.separator + className + "controller.java";
         }
 
         if (template.contains("Dao.xml.vm")) {

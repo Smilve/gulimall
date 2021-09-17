@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password: roottoor
-    url: jdbc:mysql://47.98.137.243:3306/gulimall_ums
+    url: jdbc:mysql://47.98.137.243:3306/gulimall_ums?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
