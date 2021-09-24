@@ -64,11 +64,11 @@
         </b>
         <ul>
             <li>
-                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html" class="li_2">你好，请登录</a>
+                <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/login.html" class="li_2">你好，请登录</a>
                 <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
             </li>
             <li>
-                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" style="color: red;">免费注册</a>
+                <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/reg.html" style="color: red;">免费注册</a>
             </li>
             <span>|</span>
             <li>
@@ -400,7 +400,7 @@
 <!--搜索导航-->
 <div class="header_sous">
     <div class="logo">
-        <a href="http://gulimall.com"><img src="http://47.98.137.243/static/search/image/logo1.jpg" alt=""></a>
+        <a href="http://127.0.0.1:10001"><img src="http://47.98.137.243/static/search/image/logo1.jpg" alt=""></a>
     </div>
     <div class="header_form">
         <input id="keyword_input" type="text" placeholder="手机" th:value="${param.keyword}"/>
@@ -1214,7 +1214,8 @@
                                 <a href="http://47.98.137.243/static/search/#">关注</a>
                             </div>
                             <p class="da">
-                                <a th:href="|http://item.gulimall.com/${product.skuId}.html|" >
+<!--                                <a th:href="|http://item.gulimall.com/${product.skuId}.html|" >-->
+                                <a th:href="|http://127.0.0.1:10001/${product.skuId}.html|" >
                                     <img   class="dim" th:src="${product.skuImg}">
                                 </a>
                             </p>

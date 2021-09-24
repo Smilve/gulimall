@@ -36,7 +36,12 @@ public class Constant {
      *  升序
      */
     public static final String ASC = "asc";
-	/**
+
+    /**
+     *  加密盐值
+     */
+    public static final String PASSWORD_SECRET = "idaxjufeuwfbsjcnkas";
+    /**
 	 * 菜单类型
 	 * 
 	 * @author chenshun

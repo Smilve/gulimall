@@ -39,3 +39,9 @@ server:
 logging:
   level:
     com.lvboaa.gulimall: debug
+
+gulimall:
+  thread:
+    coreSize: 10
+    maxSize: 50
+    keepAliveTime: 10

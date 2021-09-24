@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.98.137.243:8848
+  application:
+    name: gulimall-auth-server
+  alicloud:
+    sms:
+      accessKeyId: LTAI5t6r5by5mhjfyqSpJhoa
+      secret: 3BC8w6cFLd2WewPuUtPOBsTxhXwZHO
+      signName: 橘子科技
+      templateCode: SMS_224900336
+  redis:
+    host: 47.98.137.243
+    port: 6379
+server:
+  port: 20000
+logging:
+  level:
+    com.lvboaa.gulimall: debug

@@ -10,6 +10,7 @@ package com.lvboaa.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.lvboaa.common.exception.BizCodeEnum;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -55,6 +56,10 @@ public class R extends HashMap<String, Object> {
 	public static R error(String msg) {
 		return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
 	}
+
+	public static R error(BizCodeEnum bizCodeEnum) {
+		return error(bizCodeEnum.getCode(), bizCodeEnum.getMessage());
+	}
 	
 	public static R error(int code, String msg) {
 		R r = new R();
@@ -84,4 +89,16 @@ public class R extends HashMap<String, Object> {
 		super.put(key, value);
 		return this;
 	}
+
+	public Integer getCode() {
+
+		return (Integer) this.get("code");
+	}
+
+	public String getMsg() {
+
+		return this.get("msg").toString();
+	}
+
+
 }

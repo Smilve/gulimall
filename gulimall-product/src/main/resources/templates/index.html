@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>谷粒商城2020</title>
+  <title>谷粒商城2021</title>
   <link rel="stylesheet" href="http://47.98.137.243/static/index/css/swiper-3.4.2.min.css">
   <link rel="stylesheet" href="http://47.98.137.243/static/index/css/GL.css">
   <script src="http://47.98.137.243/static/index/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
@@ -96,13 +96,13 @@
       <ul>
         <li>
           <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
-          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
+          <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/login.html">你好，请登录</a>
         </li>
         <li>
-          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
+          <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/reg.html" class="li_2">免费注册</a>
         </li>
         <li>
-          <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
+          <a th:if="${session.loginUser != null}" href="http://127.0.0.1:20000/loguot.html" class="li_2">立即退出</a>
         </li>
         <span>|</span>
         <li>
@@ -246,8 +246,8 @@
             <div class="user_info_show">
               <p class="">Hi, 欢迎来到!</p>
               <p>
-                <a href="#" class="">登录</a>
-                <a href="#" class="">注册</a>
+                <a href="127.0.0.1:20000" class="">登录</a>
+                <a href="127.0.0.1:20000/reg.html" class="">注册</a>
               </p>
             </div>
           </div>
