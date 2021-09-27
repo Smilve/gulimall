@@ -7,6 +7,7 @@ import java.util.Map;
 import com.lvboaa.gulimall.member.feign.CouponFeignService;
 import com.lvboaa.gulimall.member.vo.MemberLoginVo;
 import com.lvboaa.gulimall.member.vo.MemberRegisterVo;
+import com.lvboaa.gulimall.member.vo.SocialUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,12 @@ public class MemberController {
         MemberEntity memberEntity = memberService.login(vo);
         return R.ok().setData(memberEntity);
     }
+    @PostMapping("/oauth2/login")
+    public R uauth2Login(@RequestBody SocialUser socialUser){
+        MemberEntity memberEntity = memberService.login(socialUser);
+        return R.ok().setData(memberEntity);
+    }
+
 
     @RequestMapping("/coupons")
     public R test(){

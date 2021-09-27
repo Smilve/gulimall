@@ -98,7 +98,7 @@ public class CategoryController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
-        // 因为 Arrays.asList返回的 ArrayList是Arrays的内部类 而不是java.util.ArrayList；没有add 和 remove这些方法，所以会抛出异常
+        // 因为 Arrays.asList返回的 ArrayList是Arrays的内部类 而不是java.utils.ArrayList；没有add 和 remove这些方法，所以会抛出异常
         // 如果不转的话会报 java.lang.UnsupportedOperationException 的异常
 		categoryService.removeMenuByIds(new CopyOnWriteArrayList<>(Arrays.asList(catIds)));
         return R.ok();

@@ -44,6 +44,7 @@ public class SmsComponent {
         request.putQueryParameter("SignName", signName);//短信签名名称
         request.putQueryParameter("TemplateCode", templateCode);//短信模板ID
         request.putQueryParameter("TemplateParam", JSONObject.toJSONString(code));//短信模板变量对应的实际值
+        System.out.println(signName);
         try {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());

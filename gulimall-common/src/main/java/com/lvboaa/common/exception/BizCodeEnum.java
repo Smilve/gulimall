@@ -31,6 +31,8 @@ public enum BizCodeEnum {
     PHONE_EXIST_EXCEPTION(15002,"存在相同的手机号"),
     NO_STOCK_EXCEPTION(21000,"商品库存不足"),
     LOGINACCT_PASSWORD_EXCEPTION(15003,"账号或密码错误"),
+    CREATE_TOKEN_ERROR(15004,"生成token错误"),
+    TOKEN_VERIFY_ERROR(15005,"token校验错误")
     ;
 
     private Integer code;

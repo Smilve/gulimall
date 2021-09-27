@@ -1,5 +1,6 @@
 package com.lvboaa.authserver.feign;
 
+import com.lvboaa.authserver.vo.SocialUser;
 import com.lvboaa.authserver.vo.UserLoginVo;
 import com.lvboaa.authserver.vo.UserRegisterVo;
 import com.lvboaa.common.utils.R;
@@ -14,4 +15,7 @@ public interface MemberFeginService {
 
     @PostMapping("/member/member/login")
     R login(UserLoginVo vo);
+
+    @PostMapping("/member/member/oauth2/login")
+    R oauthLogin(SocialUser socialUser);
 }

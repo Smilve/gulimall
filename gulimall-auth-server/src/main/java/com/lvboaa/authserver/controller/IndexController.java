@@ -1,7 +1,10 @@
 package com.lvboaa.authserver.controller;
 
+import com.alibaba.fastjson.TypeReference;
 import com.lvboaa.authserver.feign.MemberFeginService;
 import com.lvboaa.authserver.service.SendSms;
+import com.lvboaa.common.utils.JwtUtils;
+import com.lvboaa.common.vo.MemberResponseVo;
 import com.lvboaa.authserver.vo.UserLoginVo;
 import com.lvboaa.authserver.vo.UserRegisterVo;
 import com.lvboaa.common.constant.AuthServerConstant;
@@ -18,6 +21,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +39,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/sms")
 @Slf4j
-public class SmsController {
+public class IndexController {
 
     @Autowired
     private SendSms sendSms;
@@ -105,17 +110,21 @@ public class SmsController {
     }
 
     @PostMapping("login")
-    public String login(UserLoginVo vo, Model model){
+    public String login(UserLoginVo vo, Model model, HttpSession session){
         // 远程登录
         R r = memberFeginService.login(vo);
         if (Integer.parseInt(r.get("code").toString()) != 0){
-            log.error(r.getMsg());
+            log.error("登录失败："+r.getMsg());
             HashMap<Object, Object> map = new HashMap<>();
             map.put("msg",r.get("msg"));
             model.addAttribute("errors",map);
             return "/login.html";
         }
-        log.info("登录成功");
-        return "redirect:http://127.0.0.1:10001";
+        MemberResponseVo responseVo = r.getData(new TypeReference<MemberResponseVo>() {
+        });
+        session.setAttribute(AuthServerConstant.LOGIN_USER,responseVo);
+        log.info("登录成功,用户信息:\n"+responseVo.toString());
+
+        return "redirect:http://gulimall.com";
     }
 }

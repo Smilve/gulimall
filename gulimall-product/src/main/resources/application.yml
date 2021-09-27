@@ -27,6 +27,8 @@ spring:
       cache-null-values: true # 是否缓存空值，防止缓存穿透
   thymeleaf:
     cache: false
+  session:
+    store-type: redis
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:
@@ -36,6 +38,9 @@ mybatis-plus:
       logic-not-delete-value: 0 #逻辑未删除（默认为0）
 server:
   port: 10001
+  servlet:
+    session:
+      timeout: 30m
 logging:
   level:
     com.lvboaa.gulimall: debug

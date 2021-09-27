@@ -95,14 +95,14 @@
       </b>
       <ul>
         <li>
-          <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
-          <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/login.html">你好，请登录</a>
+          <a th:if="${session.loginUser != null}">[[${session.loginUser.nickname}]]</a>
+          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
         </li>
         <li>
-          <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/reg.html" class="li_2">免费注册</a>
+          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
         </li>
         <li>
-          <a th:if="${session.loginUser != null}" href="http://127.0.0.1:20000/loguot.html" class="li_2">立即退出</a>
+          <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
         </li>
         <span>|</span>
         <li>
@@ -246,8 +246,8 @@
             <div class="user_info_show">
               <p class="">Hi, 欢迎来到!</p>
               <p>
-                <a href="127.0.0.1:20000" class="">登录</a>
-                <a href="127.0.0.1:20000/reg.html" class="">注册</a>
+                <a href="auth.gulimall.com" class="">登录</a>
+                <a href="auth.gulimall.com" class="">注册</a>
               </p>
             </div>
           </div>
@@ -585,8 +585,8 @@
 <script type="text/javascript">
   function search() {
     var keyword=$("#searchText").val()
-    // window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
-    window.location.href="http://127.0.0.1:4000/list.html?keyword="+keyword;
+    // window.location.href="http://auth.gulimall.com/list.html?keyword="+keyword;
+    window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
   }
 
   $.get("http://seckill.gulimall.com/getCurrentSeckillSkus", function (res) {

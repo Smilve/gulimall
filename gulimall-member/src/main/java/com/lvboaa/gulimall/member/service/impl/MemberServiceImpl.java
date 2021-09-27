@@ -1,13 +1,21 @@
 package com.lvboaa.gulimall.member.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lvboaa.common.exception.RRException;
+import com.lvboaa.common.utils.HttpUtils;
 import com.lvboaa.gulimall.member.dao.MemberLevelDao;
 import com.lvboaa.gulimall.member.entity.MemberLevelEntity;
 import com.lvboaa.gulimall.member.vo.MemberLoginVo;
 import com.lvboaa.gulimall.member.vo.MemberRegisterVo;
+import com.lvboaa.gulimall.member.vo.SocialUser;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,6 +29,7 @@ import com.lvboaa.gulimall.member.service.MemberService;
 
 
 @Service("memberService")
+@Slf4j
 public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> implements MemberService {
 
     @Autowired
@@ -44,6 +53,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
 
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setUsername(vo.getUserName());
+        memberEntity.setNickname(vo.getUserName());
         memberEntity.setMobile(vo.getPhone());
 
         // 密码不可逆加密
@@ -94,6 +104,44 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
             }
         }
         throw new RRException("用户名或密码错误");
+    }
+
+    @Override
+    public MemberEntity login(SocialUser socialUser){
+        // 登录注册合并逻辑
+        String uid = socialUser.getUid();
+        MemberEntity entity = this.baseMapper.selectOne(new QueryWrapper<MemberEntity>().eq("social_uid", uid));
+        if (entity != null){
+            // 这个用户已经注册
+            entity.setAccessToken(socialUser.getAccess_token());
+            entity.setExpiresIn(socialUser.getExpires_in());
+            this.baseMapper.updateById(entity);
+
+            return entity;
+        }
+        // 没有注册
+        // 查询当前社交用户的社交账号信息（昵称、性别等）
+        MemberEntity memberEntity = new MemberEntity();
+        HashMap<String , String > map = new HashMap<>();
+        map.put("access_token",socialUser.getAccess_token());
+        map.put("uid",socialUser.getUid());
+        try{
+            HttpResponse response = HttpUtils.doGet("https://api.weibo.com", "/2/users/show.json", "get", null, map);
+            if (response.getStatusLine().getStatusCode() == 200){
+                // 查询成功
+                JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
+                memberEntity.setNickname(jsonObject.getString("name"));
+                memberEntity.setGender("m".equals(jsonObject.getString("gender")) ? 1:0);
+            }
+        }catch (Exception e){
+            // 即使网络出错也可以登录成功
+            log.error("网络出错："+e.getMessage());
+        }
+        memberEntity.setSocialUid(socialUser.getUid());
+        memberEntity.setAccessToken(socialUser.getAccess_token());
+        memberEntity.setExpiresIn(socialUser.getExpires_in());
+        this.baseMapper.insert(memberEntity);
+        return memberEntity;
     }
 
 }

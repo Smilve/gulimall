@@ -7,5 +7,6 @@ public class AuthServerConstant {
 
     public static final String LOGIN_USER = "loginUser";
 
+    public static final String AUTH_HEADER_KEY = "Authorization";
 
 }

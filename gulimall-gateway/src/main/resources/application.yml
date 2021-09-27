@@ -38,10 +38,11 @@ spring:
           predicates:
             - Host=search.gulimall.com
 
-        - id: gulimall_auth_server
-            uri: lb://gulimall-auth-server
-            predicates:
-              - Host=auth.gulimall.com
+        - id: auth_gulimall_host_route
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.gulimall.com
+
 #      globalcors:
 #        cors-configurations:
 #           允许https://docs.spring.io路径下所有GET请求跨域  配置跨域 可以用*代表所有请求和所有路径

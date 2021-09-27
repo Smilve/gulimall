@@ -60,12 +60,12 @@
             `
             <ul class="header_ul_right">
                 <li style="border: 0;">
-                    <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/login.html"
+                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html"
                        class="aa">你好，请登录</a>
-                    <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+                    <a th:if="${session.loginUser != null}">[[${session.loginUser.nickname}]]</a>
                 </li>
                 <li>
-                    <a th:if="${session.loginUser == null}" href="http://127.0.0.1:20000/reg.html"
+                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html"
                        style="color: red;">免费注册</a>
                 </li>
                 <li><a href="http://member.gulimall.com/memberOrder.html" class="aa">我的订单</a> |</li>
@@ -264,7 +264,7 @@
     <nav>
         <div class="nav_min">
             <div class="nav_top">
-                <div class="nav_top_one"><a href="http://127.0.0.1:10001"><img src="http://47.98.137.243/static/item/img/111.png"/></a></div>
+                <div class="nav_top_one"><a href="http://auth.gulimall.com"><img src="http://47.98.137.243/static/item/img/111.png"/></a></div>
                 <div class="nav_top_two"><input type="text"/>
                     <button>搜索</button>
                 </div>
@@ -1375,7 +1375,7 @@
         }
 
         // location.href = "http://item.gulimall.com/" + filterEle + ".html";
-        location.href = "http://127.0.0.1:10001/" + filterEle + ".html";
+        location.href = "http://gulimall.com" + filterEle + ".html";
 
         return false;
     });
