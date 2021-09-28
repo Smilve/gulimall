@@ -38,7 +38,7 @@ public class SendSmsImpl implements SendSms {
         HashMap<String, Object> map = new HashMap<>();
         map.put("code", code);
         try{
-            smsComponent.send(phone,map);
+//            smsComponent.send(phone,map);
         }catch (Exception e){
             log.error(e.getMessage());
         }

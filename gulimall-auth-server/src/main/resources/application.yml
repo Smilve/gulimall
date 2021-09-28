@@ -2,18 +2,18 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.137.243:8848
+        server-addr: @nacos-server-addr@
   application:
     name: gulimall-auth-server
   alicloud:
     sms:
-      accessKeyId: LTAI5t6r5by5mhjfyqSpJhoa
-      secret: 3BC8w6cFLd2WewPuUtPOBsTxhXwZHO
+      accessKeyId: asdadsadsa
+      secret: sadasdadad
       signName: 橘子科技
       templateCode: SMS_224900336
   redis:
-    host: 47.98.137.243
-    port: 6379
+    host: @spring.redis.host@
+    port: @spring.redis.port@
   session:
     store-type: redis
 

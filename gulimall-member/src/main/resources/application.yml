@@ -1,13 +1,13 @@
 spring:
   datasource:
-    username: root
-    password: roottoor
-    url: jdbc:mysql://47.98.137.243:3306/gulimall_ums?useSSL=false
+    username: @spring.datasource.username@
+    password: @spring.datasource.password@
+    url: @spring.datasource.url@/gulimall_ums?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.137.243:8848
+        server-addr: @nacos-server-addr@
   application:
     name: gulimall-member
 mybatis-plus:
