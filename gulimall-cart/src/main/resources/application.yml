@@ -1,0 +1,28 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: gulimall-cart
+  cloud:
+    nacos:
+      discovery:
+        server-addr: @nacos-server-addr@
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  thymeleaf:
+    cache: false
+  session:
+    store-type: redis
+logging:
+  level:
+    com.lvboaa.gulimall: debug
+
+#配置线程池
+gulimall:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10
+

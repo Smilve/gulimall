@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 
 /**
- * Description:
+ * Description: 使用redis缓存session对象
  *
  * @author lv.bo
  * @date 2021/9/10 17:58

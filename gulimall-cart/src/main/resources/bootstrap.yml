@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gulimall-cart
+  cloud:
+    nacos:
+      config:
+        server-addr: @nacos-server-addr@

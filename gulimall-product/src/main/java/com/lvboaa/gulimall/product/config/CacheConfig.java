@@ -11,7 +11,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * Description:
+ * Description: 设置redis缓存的序列化格式(JSON)
  *
  * @author lv.bo
  * @date 2021/9/14 16:49

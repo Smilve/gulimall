@@ -18,7 +18,7 @@ spring:
     store-type: redis
 
 server:
-  port: 20000
+  port: 20001
   servlet:
     session:
       timeout: 30m

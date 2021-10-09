@@ -5,6 +5,7 @@ import com.lvboaa.common.exception.RRException;
 import com.lvboaa.common.utils.HttpUtils;
 import com.lvboaa.gulimall.member.dao.MemberLevelDao;
 import com.lvboaa.gulimall.member.entity.MemberLevelEntity;
+import com.lvboaa.gulimall.member.entity.MemberReceiveAddressEntity;
 import com.lvboaa.gulimall.member.vo.MemberLoginVo;
 import com.lvboaa.gulimall.member.vo.MemberRegisterVo;
 import com.lvboaa.gulimall.member.vo.SocialUser;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -143,5 +145,4 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         this.baseMapper.insert(memberEntity);
         return memberEntity;
     }
-
 }

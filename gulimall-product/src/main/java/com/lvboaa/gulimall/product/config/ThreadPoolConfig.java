@@ -21,7 +21,7 @@ public class ThreadPoolConfig {
 
     @Bean
     public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfigProperties pool){
-        return new ThreadPoolExecutor(pool.getCoreSize(),pool.getMaxSize(),pool.getMaxSize(), TimeUnit.SECONDS,new LinkedBlockingDeque<>(1000),
+        return new ThreadPoolExecutor(pool.getCoreSize(),pool.getMaxSize(),pool.getKeepAliveTime(), TimeUnit.SECONDS,new LinkedBlockingDeque<>(1000),
                 Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     }
 }

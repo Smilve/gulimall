@@ -7,6 +7,7 @@ import com.lvboaa.gulimall.member.vo.MemberLoginVo;
 import com.lvboaa.gulimall.member.vo.MemberRegisterVo;
 import com.lvboaa.gulimall.member.vo.SocialUser;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +30,5 @@ public interface MemberService extends IService<MemberEntity> {
     MemberEntity login(MemberLoginVo vo);
 
     MemberEntity login(SocialUser socialUser);
-
 }
 

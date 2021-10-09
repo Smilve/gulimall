@@ -89,7 +89,7 @@ public class WareSkuController {
      * 查询sku是否有库存
      * @return
      */
-    @PostMapping(value = "/hasStock")
+    @PostMapping("/hasStock")
     public R getSkuHasStock(@RequestBody List<Long> skuIds) {
 
         //skuId stock

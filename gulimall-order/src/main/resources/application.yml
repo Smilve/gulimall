@@ -4,12 +4,32 @@ spring:
     password: @spring.datasource.password@
     url: @spring.datasource.url@/gulimall_oms?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  session:
+    store-type: redis
   cloud:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
   application:
     name: gulimall-order
+  rabbitmq:
+    host: @spring.rabbit.host@
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    publisher-confirms: true  # 开启发送端确认
+    publisher-returns: true   # 开启发送端消息抵达队列的确认
+    template:
+      mandatory: true     # 只要抵达队列，以异步发送优先回调return确认
+    listener:
+      direct:
+        acknowledge-mode: manual  # 手动确认ack消息
+  thymeleaf:
+    cache: false
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:
@@ -20,3 +40,9 @@ server:
 logging:
   level:
     com.lvboaa.gulimall: debug
+
+gulimall:
+  thread:
+    coreSize: 10
+    maxSize: 50
+    keepAliveTime: 10

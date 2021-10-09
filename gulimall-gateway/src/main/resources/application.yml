@@ -21,6 +21,13 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        - id: ware_route
+          uri: lb://gulimall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
         - id: admin_route
           uri: lb://renren-fast      # loadbalance 将请求路由给renren-fast 路由
           predicates:
@@ -46,6 +53,11 @@ spring:
           uri: lb://gulimall-cart
           predicates:
             - Host=cart.gulimall.com
+
+        - id: order_gulimall_host_route
+          uri: lb://gulimall-order
+          predicates:
+            - Host=order.gulimall.com
 
 #      globalcors:
 #        cors-configurations:

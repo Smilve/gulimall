@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Description:
+ * Description: es配置
  *
  * @author lv.bo
  * @date 2021/8/13 13:53

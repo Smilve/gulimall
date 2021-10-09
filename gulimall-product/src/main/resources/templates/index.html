@@ -589,6 +589,33 @@
     window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
   }
 
+  // $.get("", function (res) {
+  //   console.log("cart=====》"+res);
+  //   // if (res.data.length > 0) {
+  //   //   res.data.forEach(function (item) {
+  //   //     $("<li onclick='toDetail(" + item.skuId + ")'></li>").append($("<img style='width: 130px; height: 130px' src='" + item.skuInfo.skuDefaultImg + "' />"))
+  //   //             .append($("<p>"+item.skuInfo.skuTitle+"</p>"))
+  //   //             .append($("<span>" + item.seckillPrice + "</span>"))
+  //   //             .append($("<s>" + item.skuInfo.price + "</s>"))
+  //   //             .appendTo("#seckillSkuContent");
+  //   //   })
+  //   // }
+  // })
+
+  // ajax 携带cookie获取当前用户购物车
+  // $.ajax({
+  //   type: "get",
+  //   url: "http://cart.gulimall.com/currentUserCartItems",
+  //   xhrFields: {
+  //     withCredentials: true //允许跨域带Cookie
+  //   },
+  //   success: function(data){
+  //
+  //     console.log("cart==>"+eval(data));
+  //   }
+  // })
+
+
   $.get("http://seckill.gulimall.com/getCurrentSeckillSkus", function (res) {
     if (res.data.length > 0) {
       res.data.forEach(function (item) {
