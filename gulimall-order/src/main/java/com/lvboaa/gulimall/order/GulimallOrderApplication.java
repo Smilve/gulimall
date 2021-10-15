@@ -17,6 +17,19 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * 3.@EnableRabbit 开启RabbitMQ的功能
  * 4.@RabbitListener  监听队列消息，得到消息(队列必须存在)；必须开启@EnableRabbit
  *
+ * Seata控制分布式事务
+ *  1）、每一个微服务必须创建undo_Log
+ *  2）、安装事务协调器：seate-server
+ *  3）、整合
+ *      1、导入依赖  spring-cloud-alibaba-seata seata-all 0.7.1
+ *      2、解压并启动seata-server：
+ *          registry.conf:注册中心配置    修改 registry  type=nacos
+ *      3、所有想要用到分布式事务的微服务使用seata DataSourceProxy 代理自己的数据源
+ *      4、每个微服务，都必须导入   registry.conf   file.conf
+ *          vgroup_mapping.{application.name}-fescar-server-group = "default"
+ *      5、启动测试分布式事务
+ *      6、给分布式大事务的入口标注@GlobalTransactional
+ *      7、每一个远程的小事务用@Trabsactional
  */
 @EnableRedisHttpSession
 @EnableDiscoveryClient

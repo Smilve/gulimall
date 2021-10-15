@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.lvboaa.common.exception.BizCodeEnum;
+import com.lvboaa.common.exception.NoStockException;
 import com.lvboaa.common.to.SkuHasStockVo;
+import com.lvboaa.gulimall.ware.vo.LockStockResult;
+import com.lvboaa.gulimall.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,5 +101,15 @@ public class WareSkuController {
 
         return R.ok().setData(vos);
 
+    }
+
+    @PostMapping("/lock/order")
+    public R orderLockStock(@RequestBody WareSkuLockVo lockVo){
+        try{
+            wareSkuService.orderLockStock(lockVo);
+            return R.ok();
+        }catch (NoStockException e){
+            return R.error(BizCodeEnum.NO_STOCK_EXCEPTION);
+        }
     }
 }

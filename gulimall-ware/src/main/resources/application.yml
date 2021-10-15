@@ -8,6 +8,9 @@ spring:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
+#    alibaba:
+#      seata:
+#        tx-service-group: gulimall-ware-fescar-server-group
   application:
     name: gulimall-ware
 mybatis-plus:

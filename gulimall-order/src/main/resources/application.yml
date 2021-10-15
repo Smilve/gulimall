@@ -13,6 +13,9 @@ spring:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
+#    alibaba:
+#      seata:
+#        tx-service-group: gulimall-order-fescar-server-group
   application:
     name: gulimall-order
   rabbitmq:

@@ -36,6 +36,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--   seata     -->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-alibaba-seata</artifactId>-->
+<!--            <version>2.1.0.RELEASE</version>-->
+<!--        </dependency>-->
+
     </dependencies>
     <dependencyManagement>
         <dependencies>

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.PreparedStatement;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -42,7 +43,6 @@ public class GulimallProductApplicationTests {
 
     @Test
     public void contextLoads() throws FileNotFoundException {
-
 
     }
 
