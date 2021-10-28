@@ -35,31 +35,31 @@ public class GenUtils {
 
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
-        templates.add("template/Entity.java.vm");
-        templates.add("template/Dao.xml.vm");
+        templates.add("templates/Entity.java.vm");
+        templates.add("templates/Dao.xml.vm");
 
-        templates.add("template/menu.sql.vm");
+        templates.add("templates/menu.sql.vm");
 
-        templates.add("template/Service.java.vm");
-        templates.add("template/ServiceImpl.java.vm");
-        templates.add("template/controller.java.vm");
-        templates.add("template/Dao.java.vm");
+        templates.add("templates/Service.java.vm");
+        templates.add("templates/ServiceImpl.java.vm");
+        templates.add("templates/controller.java.vm");
+        templates.add("templates/Dao.java.vm");
 
-        templates.add("template/index.vue.vm");
-        templates.add("template/add-or-update.vue.vm");
+        templates.add("templates/index.vue.vm");
+        templates.add("templates/add-or-update.vue.vm");
         if (MongoManager.isMongo()) {
             // mongo不需要mapper、sql   实体类需要替换
             templates.remove(0);
             templates.remove(1);
             templates.remove(2);
-            templates.add("template/MongoEntity.java.vm");
+            templates.add("templates/MongoEntity.java.vm");
         }
         return templates;
     }
 
     public static List<String> getMongoChildTemplates() {
         List<String> templates = new ArrayList<String>();
-        templates.add("template/MongoChildrenEntity.java.vm");
+        templates.add("templates/MongoChildrenEntity.java.vm");
         return templates;
     }
 
