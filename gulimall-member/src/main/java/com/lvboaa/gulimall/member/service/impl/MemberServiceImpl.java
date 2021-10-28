@@ -1,5 +1,6 @@
 package com.lvboaa.gulimall.member.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lvboaa.common.exception.RRException;
 import com.lvboaa.common.utils.HttpUtils;
@@ -128,16 +129,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         map.put("access_token",socialUser.getAccess_token());
         map.put("uid",socialUser.getUid());
         try{
-            HttpResponse response = HttpUtils.doGet("https://api.weibo.com", "/2/users/show.json", "get", null, map);
+            HttpResponse response = HttpUtils.doGet("https://api.weibo.com", "/2/users/show.json", "get", new HashMap<String, String>(), map);
             if (response.getStatusLine().getStatusCode() == 200){
                 // 查询成功
-                JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
+                JSONObject jsonObject = JSON.parseObject(EntityUtils.toString(response.getEntity()));
                 memberEntity.setNickname(jsonObject.getString("name"));
                 memberEntity.setGender("m".equals(jsonObject.getString("gender")) ? 1:0);
             }
         }catch (Exception e){
             // 即使网络出错也可以登录成功
-            log.error("网络出错："+e.getMessage());
+            log.error("网络出错："+e.getMessage()+":"+map.toString());
+            memberEntity.setNickname("微博用户_"+socialUser.getAccess_token().substring(0,5));
         }
         memberEntity.setSocialUid(socialUser.getUid());
         memberEntity.setAccessToken(socialUser.getAccess_token());

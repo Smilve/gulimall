@@ -13,6 +13,15 @@ spring:
 #        tx-service-group: gulimall-ware-fescar-server-group
   application:
     name: gulimall-ware
+  rabbitmq:
+    host: @spring.rabbit.host@
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:

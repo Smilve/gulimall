@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,7 @@ import java.util.HashMap;
  */
 @RequestMapping("/oauth2.0")
 @Slf4j
+@Controller
 public class OAuth2Controller {
 
     @Autowired
@@ -36,13 +38,14 @@ public class OAuth2Controller {
     @GetMapping("/weibo/success")
     public String weibo(@RequestParam("code") String code, HttpSession session) throws Exception {
         HashMap<String, String > map = new HashMap<>();
-        map.put("client_id","");
-        map.put("client_secret","");
+        map.put("client_id","432122344");
+        map.put("client_secret","fd8f5ccaaed65147916c7eee2e0f03ee");
         map.put("grant_type","authorization_code");
         map.put("redirect_uri","http://auth.gulimall.com/oauth2.0/weibo/success");
         map.put("code",code);
+        log.info("获取的code:"+code);
         //根据code换取accessToken
-        HttpResponse response = HttpUtils.doPost("https://api.weibo.com", "/oauth2/access_token", "post", null, null, map);
+        HttpResponse response = HttpUtils.doPost("https://api.weibo.com", "/oauth2/access_token", "post", new HashMap<>(), map, new HashMap<>());
         if (response.getStatusLine().getStatusCode() == 200){
             //获取到accessToken
             SocialUser socialUser = JSON.parseObject(EntityUtils.toString(response.getEntity()), SocialUser.class);

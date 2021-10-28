@@ -59,6 +59,8 @@ public class RabbitConfig {
              */
             @Override
             public void confirm(CorrelationData correlationData, boolean b, String s) {
+                // rabbitmq服务器收到了
+                // 修改消息的状态
 //                System.out.println("confirmcallback:"+correlationData+" "+b+" "+s);
             }
         });
@@ -75,6 +77,7 @@ public class RabbitConfig {
              */
             @Override
             public void returnedMessage(Message message, int i, String s, String s1, String s2) {
+                // 报错，修改数据库当前消息的状态->错误
 //                System.out.println("Fail Message:"+message+" "+i+" "+s+" "+s1+" "+s2);
             }
         });

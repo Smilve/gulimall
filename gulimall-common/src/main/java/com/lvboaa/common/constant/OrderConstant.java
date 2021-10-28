@@ -9,4 +9,6 @@ package com.lvboaa.common.constant;
 public class OrderConstant {
 
     public static final String USER_ORDER_TOKEN_PREFIX = "order:token:";
+
+    public static final Integer USER_ORDER_EXPIRE_TIME = 10000;
 }
