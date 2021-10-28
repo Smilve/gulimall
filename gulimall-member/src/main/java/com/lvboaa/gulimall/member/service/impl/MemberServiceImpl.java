@@ -133,6 +133,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
             if (response.getStatusLine().getStatusCode() == 200){
                 // 查询成功
                 JSONObject jsonObject = JSON.parseObject(EntityUtils.toString(response.getEntity()));
+                memberEntity.setUsername(jsonObject.getString("name"));
                 memberEntity.setNickname(jsonObject.getString("name"));
                 memberEntity.setGender("m".equals(jsonObject.getString("gender")) ? 1:0);
             }
@@ -140,6 +141,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
             // 即使网络出错也可以登录成功
             log.error("网络出错："+e.getMessage()+":"+map.toString());
             memberEntity.setNickname("微博用户_"+socialUser.getAccess_token().substring(0,5));
+            memberEntity.setUsername(memberEntity.getNickname());
         }
         memberEntity.setSocialUid(socialUser.getUid());
         memberEntity.setAccessToken(socialUser.getAccess_token());
