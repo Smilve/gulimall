@@ -48,7 +48,7 @@ public class MQConfig {
         HashMap<String, Object> arguments = new HashMap<>();
         arguments.put("x-dead-letter-exchange", "order-event-exchange");
         arguments.put("x-dead-letter-routing-key", "order.release.order");
-        arguments.put("x-message-ttl", 10000); // 消息过期时间 1分钟
+        arguments.put("x-message-ttl", 300000); // 消息过期时间 1分钟
         Queue queue = new Queue("order.delay.queue", true, false, false, arguments);
 
         return queue;

@@ -37,7 +37,7 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除（默认为1）
       logic-not-delete-value: 0 #逻辑未删除（默认为0）
 server:
-  port: 10001
+  port: 10002
   servlet:
     session:
       timeout: 30m

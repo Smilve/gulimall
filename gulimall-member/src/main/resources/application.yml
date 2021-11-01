@@ -10,6 +10,13 @@ spring:
         server-addr: @nacos-server-addr@
   application:
     name: gulimall-member
+  session:
+    store-type: redis
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  thymeleaf:
+    cache: false
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:

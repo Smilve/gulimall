@@ -1,4 +1,4 @@
-package com.lvboaa.gulimall.order.config;
+package com.lvboaa.gulimall.member.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -10,8 +10,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *  Feign远程调用是Java发起了新的请求，会丢失请求头(cookie等)，在这加上
- *  加上就相当于用户登录，请求不会被拦截
+ *  Feign远程调用是Java发起了新的请求，会丢失请求头(cookie等信息），在这加上
+ *  加上这个配置可feign请求带上cookie，相当于用户登录，通过拦截器(用户验证)
  */
 
 @Configuration
@@ -23,7 +23,7 @@ public class GuliFeignConfig {
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate template) {
-                //1、使用Requ  estContextHolder拿到刚进来的请求数据
+                //1、使用RequestContextHolder拿到刚进来的请求数据
                 ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
                 if (requestAttributes != null) {

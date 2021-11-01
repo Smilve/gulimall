@@ -59,6 +59,11 @@ spring:
           predicates:
             - Host=order.gulimall.com
 
+        - id: member_gulimall_host_route
+          uri: lb://gulimall-member
+          predicates:
+            - Host=member.gulimall.com
+
 #      globalcors:
 #        cors-configurations:
 #           允许https://docs.spring.io路径下所有GET请求跨域  配置跨域 可以用*代表所有请求和所有路径
