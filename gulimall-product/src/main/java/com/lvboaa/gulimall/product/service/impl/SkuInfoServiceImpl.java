@@ -46,8 +46,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Resource
     private SkuSaleAttrValueService skuSaleAttrValueService;
 
-//    @Autowired
-//    private SeckillFeignService seckillFeignService;
+    @Autowired
+    private SeckillFeignService seckillFeignService;
 
     @Resource
     private ThreadPoolExecutor executor;
@@ -106,32 +106,26 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setGroupAttrs(attrGroupVos);
         }, executor);
 
-
-        // Long spuId = info.getSpuId();
-        // Long catalogId = info.getCatalogId();
-
-
-//        CompletableFuture<Void> seckillFuture = CompletableFuture.runAsync(() -> {
-//            //3、远程调用查询当前sku是否参与秒杀优惠活动
-//            R skuSeckilInfo = seckillFeignService.getSkuSeckilInfo(skuId);
-//            if (Integer.parseInt(skuSeckilInfo.get("code").toString()) == 0) {
-//                //查询成功
-//                SeckillSkuVo seckilInfoData = skuSeckilInfo.getData("data", new TypeReference<SeckillSkuVo>() {
-//                });
-//                skuItemVo.setSeckillSkuVo(seckilInfoData);
-//
-//                if (seckilInfoData != null) {
-//                    long currentTime = System.currentTimeMillis();
-//                    if (currentTime > seckilInfoData.getEndTime()) {
-//                        skuItemVo.setSeckillSkuVo(null);
-//                    }
-//                }
-//            }
-//        }, executor);
+        CompletableFuture<Void> seckillFuture = CompletableFuture.runAsync(() -> {
+            R r = seckillFeignService.getSkuSeckilInfo(skuId);
+            if (r.getCode() == 0){
+                SeckillSkuVo seckillSkuVo = r.getData("data", new TypeReference<SeckillSkuVo>() {
+                });
+                skuItemVo.setSeckillSkuVo(seckillSkuVo);
+                System.out.println("skuVo:"+seckillSkuVo);
+                if (seckillSkuVo != null){
+                    long curr = System.currentTimeMillis();
+                    // 当大于秒杀时间后秒杀置空
+                    if (curr > seckillSkuVo.getEndTime()){
+                        skuItemVo.setSeckillSkuVo(null);
+                    }
+                }
+            }
+        }, executor);
 
 
         //等到所有任务都完成
-        CompletableFuture.allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture).get();
+        CompletableFuture.allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture,seckillFuture).get();
 
         return skuItemVo;
     }

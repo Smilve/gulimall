@@ -531,6 +531,8 @@
 
                             <span th:if="${#dates.createNow().getTime() >= item.seckillSkuVo.startTime && #dates.createNow().getTime() <= item.seckillSkuVo.endTime}">
                                 秒杀价  [[${#numbers.formatDecimal(item.seckillSkuVo.seckillPrice,1,2)}]]
+                                &nbsp;&nbsp;
+                                结束时间 [[${#dates.format(new java.util.Date(item.seckillSkuVo.endTime),"yyyy-MM-dd HH:mm:ss")}]]
                             </span>
 
                         </li>
@@ -1399,11 +1401,12 @@
     $(".seckill").click(function () {
         var isLogin = [[${session.loginUser != null}]];     //true
         if (isLogin) {
-            var killId = $(this).attr("sessionid") + "-" + $(this).attr("skuid");
+            var killId = $(this).attr("sessionid") + "_" + $(this).attr("skuid");
             var code = $(this).attr("code");
             var num = $("#productNum").val();
             location.href = "http://seckill.gulimall.com/kill?killId=" + killId + "&key=" + code + "&num=" + num;
         } else {
+            // 类似前端限流
             alert("秒杀请先登录");
         }
         return false;

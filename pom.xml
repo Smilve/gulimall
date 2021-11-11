@@ -29,6 +29,7 @@
         <module>gulimall-gateway</module>
         <module>gulimall-search</module>
         <module>gulimall-auth-server</module>
+        <module>gulimall-seckill</module>
     </modules>
 
     <!--  解决maven刷新java compiler版本改变  -->

@@ -16,5 +16,7 @@ import java.util.Map;
 public interface SeckillSessionService extends IService<SeckillSessionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    Object getLatest3DaysSession();
 }
 

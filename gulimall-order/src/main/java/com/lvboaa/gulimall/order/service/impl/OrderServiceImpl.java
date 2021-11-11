@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.lvboaa.common.constant.OrderConstant;
 import com.lvboaa.common.exception.NoStockException;
 import com.lvboaa.common.to.OrderTo;
+import com.lvboaa.common.to.mq.SeckillOrderTo;
 import com.lvboaa.common.utils.R;
 import com.lvboaa.common.vo.MemberResponseVo;
 import com.lvboaa.gulimall.order.constant.PayConstant;
@@ -282,6 +283,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         BigDecimal payAmount = orderInfo.getPayAmount().setScale(2, BigDecimal.ROUND_UP);
         payVo.setTotal_amount(payAmount.toString());
         payVo.setOut_trade_no(orderInfo.getOrderSn());
+        payVo.setStatus(orderInfo.getStatus());
 
         //查询订单项的数据
         List<OrderItemEntity> orderItemInfo = orderItemService.list(
@@ -351,6 +353,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
         return "success";
     }
+
 
     /**
      * 修改订单状态
@@ -509,7 +512,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //1、商品的spu信息
         Long skuId = item.getSkuId();
         //获取spu的信息
-        R spuInfo = productFeignService.getSupInfoBySkuId(skuId);
+        R spuInfo = productFeignService.getSpuInfoBySkuId(skuId);
         SpuInfoVo spuInfoData = spuInfo.getData("data", new TypeReference<SpuInfoVo>() {
         });
         orderItemEntity.setSpuId(spuInfoData.getId());
@@ -568,5 +571,43 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         List<OrderItemEntity> orderItems = orderCreateTo.getOrderItems();
         //批量保存订单项数据
         orderItemService.saveBatch(orderItems);
+    }
+
+    @Override
+    public void createSeckillOrder(SeckillOrderTo orderTo) {
+        //TODO 保存订单信息
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderSn(orderTo.getOrderSn());
+        orderEntity.setMemberId(orderTo.getMemberId());
+        orderEntity.setCreateTime(new Date());
+        BigDecimal totalPrice = orderTo.getSeckillPrice().multiply(BigDecimal.valueOf(orderTo.getNum()));
+        orderEntity.setPayAmount(totalPrice);
+        orderEntity.setTotalAmount(totalPrice);
+        orderEntity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
+
+        //保存订单
+        this.save(orderEntity);
+
+        //保存订单项信息
+        OrderItemEntity orderItem = new OrderItemEntity();
+        orderItem.setOrderSn(orderTo.getOrderSn());
+        orderItem.setRealAmount(totalPrice);
+
+        orderItem.setSkuQuantity(orderTo.getNum());
+
+        //保存商品的spu信息
+        R spuInfo = productFeignService.getSpuInfoBySkuId(orderTo.getSkuId());
+        SpuInfoVo spuInfoData = spuInfo.getData("data", new TypeReference<SpuInfoVo>() {
+        });
+        orderItem.setSpuId(spuInfoData.getId());
+        orderItem.setSpuName(spuInfoData.getSpuName());
+        orderItem.setSpuBrand(spuInfoData.getBrandName());
+        orderItem.setCategoryId(spuInfoData.getCatalogId());
+
+        //保存订单项数据
+        orderItemService.save(orderItem);
+
+        // todo 订单创建成功应该锁定库存 并发送消息到死信队列中
+        //  (锁定库存可以不用，因为redis直接库存预热了)
     }
 }

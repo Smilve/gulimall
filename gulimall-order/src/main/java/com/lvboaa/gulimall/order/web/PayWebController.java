@@ -44,6 +44,13 @@ public class PayWebController {
     public String aliPayOrder(@RequestParam("orderSn") String orderSn) throws AlipayApiException {
 
         PayVo payVo = orderService.getOrderPay(orderSn);
+        if (payVo.getStatus() == 1){
+            log.info("该订单已支付");
+            return "该订单已支付";
+        }else if (payVo.getStatus() == 4 || payVo.getStatus() == 5){
+            log.info("该订单已失效");
+            return "该订单已失效";
+        }
         String pay = alipayTemplate.pay(payVo);
         log.info("支付："+pay);
         return pay;

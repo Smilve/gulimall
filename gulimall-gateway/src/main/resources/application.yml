@@ -21,6 +21,13 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        - id: coupon_route
+          uri: lb://gulimall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
         - id: ware_route
           uri: lb://gulimall-ware
           predicates:
@@ -64,7 +71,13 @@ spring:
           predicates:
             - Host=member.gulimall.com
 
-#      globalcors:
+        - id: seckill_gulimall_host_route
+          uri: lb://gulimall-seckill
+          predicates:
+            - Host=seckill.gulimall.com
+
+
+  #      globalcors:
 #        cors-configurations:
 #           允许https://docs.spring.io路径下所有GET请求跨域  配置跨域 可以用*代表所有请求和所有路径
 #          '[/**]':
