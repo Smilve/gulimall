@@ -4,6 +4,7 @@ import com.lvboaa.common.utils.R;
 import com.lvboaa.gulimall.seckill.service.SecKillService;
 import com.lvboaa.gulimall.seckill.to.SeckillSkuRedisTo;
 import com.lvboaa.gulimall.seckill.vo.SeckillSkuVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.List;
  * @date 2021/11/10 15:53
  */
 @Controller
+@Slf4j
 public class SecKillController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class SecKillController {
     @GetMapping("/getCurrentSeckillSkus")
     @ResponseBody
     public R getCurrentSecKillSkus(){
+        log.info("测试sentinel");
         List<SeckillSkuRedisTo> secList=secKillService.getCurrentSecKillSkus();
         return R.ok().setData(secList);
     }

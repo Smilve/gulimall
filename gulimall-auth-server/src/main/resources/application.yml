@@ -3,6 +3,10 @@ spring:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8720  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
   application:
     name: gulimall-auth-server
   alicloud:
@@ -25,3 +29,7 @@ server:
 logging:
   level:
     com.lvboaa.gulimall: debug
+
+feign:
+  sentinel:
+    enabled: true

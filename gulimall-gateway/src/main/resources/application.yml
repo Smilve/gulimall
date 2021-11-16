@@ -3,6 +3,9 @@ spring:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        dashboard: @sentinel-dashboard-addr@
     gateway:
       routes:
         - id: baidu_route
@@ -42,36 +45,36 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
 
-        - id: gulimall_host_route
+        - id: product_host_route
           uri: lb://gulimall-product
           predicates:
             - Host=gulimall.com,item.gulimall.com
 
-        - id: search_gulimall_host_route
+        - id: search_host_route
           uri: lb://gulimall-search
           predicates:
             - Host=search.gulimall.com
 
-        - id: auth_gulimall_host_route
+        - id: auth_host_route
           uri: lb://gulimall-auth-server
           predicates:
             - Host=auth.gulimall.com
-        - id: cart_gulimall_host_route
+        - id: cart_host_route
           uri: lb://gulimall-cart
           predicates:
             - Host=cart.gulimall.com
 
-        - id: order_gulimall_host_route
+        - id: order_host_route
           uri: lb://gulimall-order
           predicates:
             - Host=order.gulimall.com
 
-        - id: member_gulimall_host_route
+        - id: member_host_route
           uri: lb://gulimall-member
           predicates:
             - Host=member.gulimall.com
 
-        - id: seckill_gulimall_host_route
+        - id: seckill_host_route
           uri: lb://gulimall-seckill
           predicates:
             - Host=seckill.gulimall.com

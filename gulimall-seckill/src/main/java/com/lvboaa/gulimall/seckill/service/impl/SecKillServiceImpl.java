@@ -1,5 +1,9 @@
 package com.lvboaa.gulimall.seckill.service.impl;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -69,44 +73,57 @@ public class SecKillServiceImpl implements SecKillService {
         R r = couponFeignService.getLatest3DaysSession();
         if (r.getCode() == 0){
             List<SeckillSessionWithSkusVo> session =r.getData("data",new TypeReference<List<SeckillSessionWithSkusVo>>(){});
-            //缓存到Redis
-            //1、缓存活动信息
-            saveSessionInfos(session);
+            if (session != null && session.size() > 0 ){
+                //缓存到Redis
+                //1、缓存活动信息
+                saveSessionInfos(session);
 
-            //2、缓存活动的关联商品信息
-            saveSessionSkuInfo(session);
+                //2、缓存活动的关联商品信息
+                saveSessionSkuInfo(session);
+            }
         }
     }
 
+    @SentinelResource(value = "getCurrentSeckillSkusResource",blockHandler = "blockHandler")
     @Override
     public List<SeckillSkuRedisTo> getCurrentSecKillSkus() {
-
-        long now = new Date().getTime();
-        Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
-        List<SeckillSkuRedisTo> collect= new ArrayList<>();
-        BoundHashOperations<String, String, String > hashOps = redisTemplate.boundHashOps(SECKILL_CHARE_PREFIX);
-        for (String key:keys){
-            String replace = key.replace(SESSION_CACHE_PREFIX, "");
-            String[] split = replace.split("_");
-            long start = Long.parseLong(split[0]);
-            long end = Long.parseLong(split[1]);
-            if (now >= start && now <= end){
-                // 1_1
-                List<String> range = redisTemplate.opsForList().range(key, -100, 100);
-                assert range != null;
-                // 对应的 sku秒杀信息
-                List<String> multiGet = hashOps.multiGet(range);
-                if (multiGet != null && multiGet.size() >0){
-                    List<SeckillSkuRedisTo> collect1 = multiGet.stream().map(item -> {
-                        SeckillSkuRedisTo redisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
-                        // redisTo.setRandomCode(null); //秒杀开始的时候需要给随机码 预告随机不需要带
-                        return redisTo;
-                    }).collect(Collectors.toList());
-                    collect.addAll(collect1);
+        try (Entry entry = SphU.entry("seckillSkus")) {
+            long now = new Date().getTime();
+            Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
+            List<SeckillSkuRedisTo> collect= new ArrayList<>();
+            BoundHashOperations<String, String, String > hashOps = redisTemplate.boundHashOps(SECKILL_CHARE_PREFIX);
+            for (String key:keys){
+                String replace = key.replace(SESSION_CACHE_PREFIX, "");
+                String[] split = replace.split("_");
+                long start = Long.parseLong(split[0]);
+                long end = Long.parseLong(split[1]);
+                if (now >= start && now <= end){
+                    // 1_1
+                    List<String> range = redisTemplate.opsForList().range(key, -100, 100);
+                    assert range != null;
+                    // 对应的 sku秒杀信息
+                    List<String> multiGet = hashOps.multiGet(range);
+                    if (multiGet != null && multiGet.size() >0){
+                        List<SeckillSkuRedisTo> collect1 = multiGet.stream().map(item -> {
+                            SeckillSkuRedisTo redisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
+                            // redisTo.setRandomCode(null); //秒杀开始的时候需要给随机码 预告随机不需要带
+                            return redisTo;
+                        }).collect(Collectors.toList());
+                        collect.addAll(collect1);
+                    }
                 }
             }
+            return collect;
+        }catch (BlockException e){
+            log.error("资源被限流{}",e.getMessage());
         }
-        return collect;
+        return null;
+    }
+
+    public List<SeckillSkuRedisTo> blockHandler(BlockException e) {
+
+        log.error("getCurrentSeckillSkusResource被限流了,{}",e.getMessage());
+        return null;
     }
 
     @Override

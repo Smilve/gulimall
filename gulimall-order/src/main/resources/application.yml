@@ -13,6 +13,10 @@ spring:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8724  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
 #    alibaba:
 #      seata:
 #        tx-service-group: gulimall-order-fescar-server-group
@@ -51,6 +55,9 @@ gulimall:
     coreSize: 10
     maxSize: 50
     keepAliveTime: 10
+feign:
+  sentinel:
+    enabled: true
 
 #支付宝相关的配置
 alipay:

@@ -3,6 +3,10 @@ spring:
     nacos:
       discovery:
         server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8726  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
   application:
     name: gulimall-search
   thymeleaf:
@@ -17,6 +21,9 @@ server:
   servlet:
     session:
       timeout: 30m
+feign:
+  sentinel:
+    enabled: true
 es:
   server:
     url: 127.0.0.1

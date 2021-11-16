@@ -92,6 +92,18 @@
             <version>1.2.75</version>
         </dependency>
 
+        <!--   sentinel     -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <!--    springboot的监控信息，配置sentinel监控    -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <!--  SpringCloud Alibaba-->
