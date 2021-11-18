@@ -33,6 +33,14 @@ spring:
     cache: false
   session:
     store-type: redis
+  zipkin:
+    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+  sleuth:
+    sampler:
+      probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:
@@ -48,6 +56,9 @@ server:
 logging:
   level:
     com.lvboaa.gulimall: debug
+    org.springframework.cloud.openfeign: debug  # 加这个是在控制台可以看到span和trace的id，与zipkin整合无关
+    org.springframework.cloud.sleuth: debug
+
 
 gulimall:
   thread:

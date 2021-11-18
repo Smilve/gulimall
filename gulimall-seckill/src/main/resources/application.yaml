@@ -24,6 +24,14 @@ spring:
     username: admin
     password: admin
     port: 5672
+  zipkin:
+    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+  sleuth:
+    sampler:
+      probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
 
 #    publisher-confirms: true  # 开启发送端确认
 #    publisher-returns: true   # 开启发送端消息抵达队列的确认
@@ -38,4 +46,6 @@ feign:
 logging:
   level:
     com.lvboaa.gulimall: debug
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug
 
