@@ -149,4 +149,10 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         this.baseMapper.insert(memberEntity);
         return memberEntity;
     }
+
+    @Override
+    public MemberEntity getByUserName(String userName) {
+        MemberEntity memberEntity = this.baseMapper.selectOne(new QueryWrapper<MemberEntity>().eq("username", userName));
+        return memberEntity;
+    }
 }

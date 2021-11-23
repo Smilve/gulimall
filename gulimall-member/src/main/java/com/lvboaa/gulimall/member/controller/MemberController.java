@@ -52,6 +52,13 @@ public class MemberController {
         return R.ok().setData(memberEntity);
     }
 
+    @PostMapping("/user/byName")
+    public R info(@RequestBody String userName){
+        MemberEntity member = memberService.getByUserName(userName);
+
+        return R.ok().put("member", member);
+    }
+
 
     @RequestMapping("/coupons")
     public R test(){

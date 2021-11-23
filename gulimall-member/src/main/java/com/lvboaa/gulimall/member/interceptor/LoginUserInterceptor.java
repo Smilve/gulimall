@@ -2,6 +2,7 @@ package com.lvboaa.gulimall.member.interceptor;
 
 import com.lvboaa.common.constant.AuthServerConstant;
 import com.lvboaa.common.vo.MemberResponseVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,6 +18,7 @@ import java.io.PrintWriter;
  * @date 2021/10/8 17:47
  */
 @Component
+@Slf4j
 public class LoginUserInterceptor implements HandlerInterceptor {
 
     public static ThreadLocal<MemberResponseVo> threadLocal = new ThreadLocal<>();
@@ -24,11 +26,14 @@ public class LoginUserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        System.out.println("进来了");
         String uri = request.getRequestURI();
         boolean match = new AntPathMatcher().match("/member/**", uri);
-        if (match) {
+        boolean match1 = new AntPathMatcher().match("/user/**", uri);
+        if (match || match1) {
             return true;
         }
+        log.info("拦截请求："+uri);
 
         MemberResponseVo attribute = (MemberResponseVo) request.getSession().getAttribute(AuthServerConstant.LOGIN_USER);
         if (attribute != null){

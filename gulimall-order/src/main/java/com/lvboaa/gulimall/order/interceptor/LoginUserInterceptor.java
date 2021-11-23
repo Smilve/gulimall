@@ -28,7 +28,10 @@ public class LoginUserInterceptor implements HandlerInterceptor {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         boolean match = antPathMatcher.match("/order/order/status/**", uri);
         boolean match1 = antPathMatcher.match("/payed/notify", uri);
-        if (match || match1) {
+        boolean match2 = antPathMatcher.match("/order/p1", uri);
+        boolean match3 = antPathMatcher.match("/order/p2", uri);
+        boolean match4 = antPathMatcher.match("/order/p3", uri);
+        if (match || match1 ||match2||match3 || match4) {
             return true;
         }
 

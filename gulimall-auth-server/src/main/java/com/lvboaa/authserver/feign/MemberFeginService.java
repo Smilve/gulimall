@@ -6,6 +6,7 @@ import com.lvboaa.authserver.vo.UserRegisterVo;
 import com.lvboaa.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient("gulimall-member")
 public interface MemberFeginService {
@@ -18,4 +19,7 @@ public interface MemberFeginService {
 
     @PostMapping("/member/member/oauth2/login")
     R oauthLogin(SocialUser socialUser);
+
+    @PostMapping("/member/member/user/byName")
+    R getUserByUserName(String userName);
 }

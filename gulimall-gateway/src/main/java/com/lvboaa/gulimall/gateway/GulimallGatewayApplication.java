@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @EnableDiscoveryClient
 // 排除common的数据库配置 因为加了mybatis依赖就有了数据源的自动注入
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 public class GulimallGatewayApplication {
 
     public static void main(String[] args) {

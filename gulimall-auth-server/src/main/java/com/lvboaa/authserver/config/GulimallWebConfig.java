@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Description:
+ * Description: 配置登录和注册页面
  *
  * @author lv.bo
  * @date 2021/9/23 13:56

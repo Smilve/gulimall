@@ -49,3 +49,12 @@ RabbitMQ-->使用`死信队列`实现分布式事务(如订单超时，订单服
 服务限流、熔断、降级
 >Sleuth+ZipKin 
 服务链路追踪
+
+# 2021-11-18
+>整合SpringSecurity+JWT 实现单点登录
+```bash
+gulimall-auth-server
+gulimall-order
+gulimall-member(查询用户信息)
+# 由于gateway和oauth2不兼容，导致未在网关层进行权限验证
+```

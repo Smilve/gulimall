@@ -92,35 +92,13 @@
             <version>1.2.75</version>
         </dependency>
 
-        <!--   sentinel     -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-        </dependency>
 
-        <!--    springboot的监控信息，配置sentinel监控，信息更详细    -->
+        <!-- oauth2+JWT 实现单点登录-->
 <!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-oauth2</artifactId>-->
 <!--        </dependency>-->
 
-        <!--   链路追踪：sleuth    -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
-        </dependency>
-
-        <!--    zipkin:图形展示链路追踪，包含了sleuth，可以去掉    -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-sleuth</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
     </dependencies>
 

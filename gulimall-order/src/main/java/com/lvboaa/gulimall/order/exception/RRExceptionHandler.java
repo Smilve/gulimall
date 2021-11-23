@@ -4,6 +4,7 @@ import com.lvboaa.common.exception.RRException;
 import com.lvboaa.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -47,6 +48,12 @@ public class RRExceptionHandler {
     public R handleInterruptedException(InterruptedException e){
         log.error(e.getMessage(), e);
         return R.error("阻塞中断异常："+e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public R handleInterruptedException(AccessDeniedException e){
+        log.error(e.getMessage(), e);
+        return R.error("你没有这个权限："+e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

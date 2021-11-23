@@ -17,7 +17,17 @@ spring:
           predicates:
             - Query=url,qq
 
-        - id: product_route
+        - id: product_route1
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Path=/oauth/**
+
+        - id: product_route2
+          uri: lb://gulimall-order
+          predicates:
+            - Path=/order/**
+
+        - id: product_route3
           uri: lb://gulimall-product    # 默认按前后顺序优先匹配，细粒度的匹配规则放在上面
           predicates:
             - Path=/api/product/**
@@ -90,14 +100,14 @@ spring:
 
   application:
     name: gulimall-gateway
-  zipkin:
-    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
-    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
-    sender:
-      type: web # 设置使用http的方式传输数据
-    sleuth:
-      sampler:
-        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
+#  zipkin:
+#    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
+#    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+#    sender:
+#      type: web # 设置使用http的方式传输数据
+#    sleuth:
+#      sampler:
+#        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
 
 server:
   port: 88

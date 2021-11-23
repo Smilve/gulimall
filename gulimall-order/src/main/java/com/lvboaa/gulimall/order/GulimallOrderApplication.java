@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 
 /**
@@ -31,7 +30,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  *      6、给分布式大事务的入口标注@GlobalTransactional
  *      7、每一个远程的小事务用@Trabsactional
  */
-@EnableRedisHttpSession
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan("com.lvboaa.gulimall.order.dao")
