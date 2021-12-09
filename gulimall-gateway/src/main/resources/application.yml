@@ -100,7 +100,7 @@ spring:
         probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
 
 server:
-  port: 88
+  port: @gateway.port@
 logging:
   level:
     com.lvboaa.gulimall: debug
