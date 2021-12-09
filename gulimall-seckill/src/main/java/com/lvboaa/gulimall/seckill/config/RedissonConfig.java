@@ -3,6 +3,7 @@ package com.lvboaa.gulimall.seckill.config;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,9 +23,9 @@ public class RedissonConfig {
      *
      */
     @Bean(destroyMethod="shutdown")
-    RedissonClient redisson() throws IOException {
+    RedissonClient redisson(@Value("${spring.redis.host}") String host) throws IOException {
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://47.98.137.243:6379");
+        config.useSingleServer().setAddress("redis://"+host+":6379");
         return Redisson.create(config);
     }
 

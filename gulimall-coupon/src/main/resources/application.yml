@@ -15,7 +15,7 @@ spring:
   application:
     name: gulimall-coupon
   zipkin:
-    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
     discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
     sender:
       type: web # 设置使用http的方式传输数据
@@ -29,7 +29,7 @@ mybatis-plus:
     db-config:
       id-type: auto   # 主键生成策略，自增   也可以在entity类的 @TableId配置
 server:
-  port: 7000
+  port: @coupon.port@
 logging:
   level:
     com.lvboaa.gulimall: debug

@@ -1,5 +1,5 @@
 server:
-  port: 3000
+  port: @cart.port@
 
 spring:
   application:
@@ -20,7 +20,7 @@ spring:
   session:
     store-type: redis
   zipkin:
-    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
     discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
     sender:
       type: web # 设置使用http的方式传输数据

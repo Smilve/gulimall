@@ -40,7 +40,6 @@ import com.lvboaa.gulimall.ware.dao.WareSkuDao;
 import com.lvboaa.gulimall.ware.entity.WareSkuEntity;
 import com.lvboaa.gulimall.ware.service.WareSkuService;
 import org.springframework.transaction.annotation.Transactional;
-import sun.plugin2.message.Message;
 
 @Service("wareSkuService")
 @Slf4j

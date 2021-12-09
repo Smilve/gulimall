@@ -39,6 +39,7 @@ public class ElasticSearchConfig {
 
     @Bean
     public RestHighLevelClient restHighLevelClient(){
+        // TODO：修改为线上的地址
         return new RestHighLevelClient(RestClient.builder(new HttpHost("127.0.0.1",9200,"http")));
     }
 }
