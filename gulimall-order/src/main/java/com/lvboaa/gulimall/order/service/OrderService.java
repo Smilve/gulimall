@@ -1,10 +1,13 @@
 package com.lvboaa.gulimall.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lvboaa.common.to.mq.SeckillOrderTo;
 import com.lvboaa.common.utils.PageUtils;
 import com.lvboaa.gulimall.order.entity.OrderEntity;
+import com.lvboaa.gulimall.order.vo.*;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 订单
@@ -16,5 +19,25 @@ import java.util.Map;
 public interface OrderService extends IService<OrderEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 给订单确认页返回需要用的数据
+     * @return
+     */
+    OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
+
+    SubmitResponseVo submitOrder(OrderSubmitVo submitVo);
+
+    OrderEntity getOrderByOrderSn(String orderSn);
+
+    void closeOrder(OrderEntity orderEntity);
+
+    PayVo getOrderPay(String orderSn);
+
+    PageUtils queryPageWithItem(Map<String, Object> params);
+
+    String handlePayResult(PayAsyncVo asyncVo);
+
+    void createSeckillOrder(SeckillOrderTo seckillOrderTo);
 }
 

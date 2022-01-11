@@ -1,16 +1,20 @@
 spring:
   datasource:
-    username: root
-    password: roottoor
-    url: jdbc:mysql://47.98.137.243:3306/gulimall_pms?useSSL=false
+    username: @spring.datasource.username@
+    password: @spring.datasource.password@
+    url: @spring.datasource.url@/gulimall_pms?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.137.243:8848
+        server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8725  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
   redis:
-    host: 47.98.137.243
-    port: 6379
+    host: @spring.redis.host@
+    port: @spring.redis.port@
   #    alicloud:
 #      access-key: LTAI5tSAk4xmqeMXc6f3xd
 #      secret-key: HPG92M7qM1nFWcixV6GZpytcV8e8
@@ -18,6 +22,25 @@ spring:
 #        endpoint: oss-cn-chengdu.aliyuncs.com
   application:
     name: gulimall-product
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+      key-prefix: CACHE_
+      use-key-prefix: true
+      cache-null-values: true # 是否缓存空值，防止缓存穿透
+  thymeleaf:
+    cache: false
+  session:
+    store-type: redis
+  zipkin:
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+  sleuth:
+    sampler:
+      probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:
@@ -26,7 +49,22 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除（默认为1）
       logic-not-delete-value: 0 #逻辑未删除（默认为0）
 server:
-  port: 10001
+  port: @product.port@
+  servlet:
+    session:
+      timeout: 30m
 logging:
   level:
     com.lvboaa.gulimall: debug
+    org.springframework.cloud.openfeign: debug  # 加这个是在控制台可以看到span和trace的id，与zipkin整合无关
+    org.springframework.cloud.sleuth: debug
+
+
+gulimall:
+  thread:
+    coreSize: 10
+    maxSize: 50
+    keepAliveTime: 10
+feign:
+  sentinel:
+    enabled: true

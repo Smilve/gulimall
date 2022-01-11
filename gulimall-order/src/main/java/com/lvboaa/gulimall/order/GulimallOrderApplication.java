@@ -1,13 +1,42 @@
 package com.lvboaa.gulimall.order;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+
+/**
+ * 使用RabbitMQ
+ * 1.引入amqp场景，RabbitAutoConfiguration自动生效
+ * 2.给容器中自动配置了
+ *      RabbitTemplate、AmqpAdmin、CachingConnectionFactory、RabbitMessagingTemplate
+ * 3.@EnableRabbit 开启RabbitMQ的功能
+ * 4.@RabbitListener  监听队列消息，得到消息(队列必须存在)；必须开启@EnableRabbit
+ *
+ * Seata控制分布式事务
+ *  1）、每一个微服务必须创建undo_Log
+ *  2）、安装事务协调器：seate-server
+ *  3）、整合
+ *      1、导入依赖  spring-cloud-alibaba-seata seata-all 0.7.1
+ *      2、解压并启动seata-server：
+ *          registry.conf:注册中心配置    修改 registry  type=nacos
+ *      3、所有想要用到分布式事务的微服务使用seata DataSourceProxy 代理自己的数据源
+ *      4、每个微服务，都必须导入   registry.conf   file.conf
+ *          vgroup_mapping.{application.name}-fescar-server-group = "default"
+ *      5、启动测试分布式事务
+ *      6、给分布式大事务的入口标注@GlobalTransactional
+ *      7、每一个远程的小事务用@Trabsactional
+ */
+@EnableRedisHttpSession
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan("com.lvboaa.gulimall.order.dao")
+@EnableRabbit
+@EnableFeignClients
 public class GulimallOrderApplication {
 
     public static void main(String[] args) {

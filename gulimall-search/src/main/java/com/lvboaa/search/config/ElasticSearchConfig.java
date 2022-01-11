@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Description:
+ * Description: es配置
  *
  * @author lv.bo
  * @date 2021/8/13 13:53
@@ -17,14 +17,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticSearchConfig {
 
-    @Value("es.server.url")
-    private String url;
+//    @Value("es.server.url")
+//    private String url;
 
-    @Value("es.server.port")
-    private Integer port;
+//    @Value("es.server.port")
+//    private Integer port;
 
-    @Value("es.server.scheme")
-    private String scheme;
+//    @Value("es.server.scheme")
+//    private String scheme;
 
 
     public static final RequestOptions COMMON_OPTIONS;
@@ -38,7 +38,8 @@ public class ElasticSearchConfig {
     }
 
     @Bean
-    public RestHighLevelClient esRestClient(){
-        return new RestHighLevelClient(RestClient.builder(new HttpHost(url,port,scheme)));
+    public RestHighLevelClient restHighLevelClient(){
+        // TODO：修改为线上的地址
+        return new RestHighLevelClient(RestClient.builder(new HttpHost("127.0.0.1",9200,"http")));
     }
 }

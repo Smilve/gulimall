@@ -2,7 +2,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.137.243:8848
+        server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        dashboard: @sentinel-dashboard-addr@
     gateway:
       routes:
         - id: baidu_route
@@ -21,13 +24,63 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        - id: coupon_route
+          uri: lb://gulimall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        - id: ware_route
+          uri: lb://gulimall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
         - id: admin_route
           uri: lb://renren-fast      # loadbalance 将请求路由给renren-fast 路由
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
-#      globalcors:
+
+        - id: product_host_route
+          uri: lb://gulimall-product
+          predicates:
+            - Host=gulimall.com,item.gulimall.com
+
+        - id: search_host_route
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
+
+        - id: auth_host_route
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.gulimall.com
+        - id: cart_host_route
+          uri: lb://gulimall-cart
+          predicates:
+            - Host=cart.gulimall.com
+
+        - id: order_host_route
+          uri: lb://gulimall-order
+          predicates:
+            - Host=order.gulimall.com
+
+        - id: member_host_route
+          uri: lb://gulimall-member
+          predicates:
+            - Host=member.gulimall.com
+
+        - id: seckill_host_route
+          uri: lb://gulimall-seckill
+          predicates:
+            - Host=seckill.gulimall.com
+
+
+  #      globalcors:
 #        cors-configurations:
 #           允许https://docs.spring.io路径下所有GET请求跨域  配置跨域 可以用*代表所有请求和所有路径
 #          '[/**]':
@@ -35,8 +88,19 @@ spring:
 #            allowedMethods:
 #              - GET
 
-
   application:
     name: gulimall-gateway
+  zipkin:
+    base-url: http://192.168.131.131:9411/  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+    sleuth:
+      sampler:
+        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
+
 server:
-  port: 88
+  port: @gateway.port@
+logging:
+  level:
+    com.lvboaa.gulimall: debug

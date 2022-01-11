@@ -1,0 +1,43 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8720  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
+  application:
+    name: gulimall-auth-server
+  alicloud:
+    sms:
+      accessKeyId: asdadsadsa
+      secret: sadasdadad
+      signName: 橘子科技
+      templateCode: SMS_224900336
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  session:
+    store-type: redis
+  zipkin:
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+    sleuth:
+      sampler:
+        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
+
+server:
+  port: @authserver.port@
+  servlet:
+    session:
+      timeout: 30m
+logging:
+  level:
+    com.lvboaa.gulimall: debug
+
+feign:
+  sentinel:
+    enabled: true

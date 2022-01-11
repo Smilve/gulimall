@@ -1,19 +1,81 @@
 spring:
   datasource:
-    username: root
-    password: roottoor
-    url: jdbc:mysql://47.98.137.243:3306/gulimall_oms
+    username: @spring.datasource.username@
+    password: @spring.datasource.password@
+    url: @spring.datasource.url@/gulimall_oms?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  session:
+    store-type: redis
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.137.243:8848
+        server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8724  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
+#    alibaba:
+#      seata:
+#        tx-service-group: gulimall-order-fescar-server-group
   application:
     name: gulimall-order
+  rabbitmq:
+    host: @spring.rabbit.host@
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    publisher-confirms: true  # 开启发送端确认
+    publisher-returns: true   # 开启发送端消息抵达队列的确认
+    template:
+      mandatory: true     # 只要抵达队列，以异步发送优先回调return确认
+    listener:
+      simple:
+        acknowledge-mode: manual  # 手动确认ack消息
+  thymeleaf:
+    cache: false
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss  # mvc必须指定日期格式，不然request传入参数的时候日期不能转成Data属性
+  zipkin:
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+    sleuth:
+      sampler:
+        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
+
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:
     db-config:
       id-type: auto   # 主键生成策略，自增   也可以在entity类的 @TableId配置
 server:
-  port: 9000
+  port: @order.port@
+logging:
+  level:
+    com.lvboaa.gulimall: debug
+
+gulimall:
+  thread:
+    coreSize: 10
+    maxSize: 50
+    keepAliveTime: 10
+feign:
+  sentinel:
+    enabled: true
+
+#支付宝相关的配置
+alipay:
+  app_id: 2016103100780297
+  merchant_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCiJ+T4kGGerJ8TjY3A/kKVaLl02WW+adlyWUsAg+1x8fdyNkSsBpMv9Q2ui7lDFsDu2BctJrRxMvd4l17WqMb190R3RO58rlk4h+eHR7A0HkephRDkXIhQyNgYjHq6fBecCfTBg4sVVChh+zDFvAOzQgHSSRBDzdJM1pkMDLBd45RKHZipLVPZlE6+UOxPD/afOyodNH/tTPXmUzTxQbDC8Iy+ZWGekGx1W5uejhYTlv4nS+HNzmGf2bQuWuiNiHtcGq/5si6rJQh89vDEC4pxLhKBoANUw1zmYrwuuffqwmnOiC0WtB9i7eEshUrB+kV2USqH5WSQCFa4h4fmuFd5AgMBAAECggEAJhijVbZuCN5bXTejdxUFRZ7d+1Lb8XliydeqpEtabKvBS8buKVA+IkU7Wqee9eERoMuJ3mS6feHQfDdr45ixbbYTEsZSFV7MvVhIj+LKxePbSDtn9Y67w+b7xgCzEL74uQMpypECCxfDiQl/suTyJZo7XVEnDhb78mt0d30/rj7Y1qVADDFcmHVTFiQuOf9vMepkOV+KS8BvOxA80giuZD5RKb+as8QtEYdJpS4zydGj2hX4OY6fElJNcbBNvzi+b/y8S0klzpJ66mbp6wuf65Y9YDj9/njMBZAphksb4kLYdlLJ8SBb5Oq4BMw8YWeRpKaLNWQPBtv4d99HALt9xQKBgQD3pQnorLgDZ/Rmb9HwuxsGgnFKs91fVvV2HzTQvtDJL9hXNnG0F2HDRkTONyZv0xfPJv28m7rRa1Aj7OCEEqLaadmAkjZu2M3Lo6twtvbqCd3hPX0XY/KJV0r9MFcYfaPs0HYPAGc6wPo0UQ/dn9QoeWn2u/nX43B0YLBmFAVqNwKBgQCnoHhImDFl5SoQyOFOcSm1Jg50hdvhM6aTWw33Ws1XbE88h5+KKDaLbV3PzpeZ4aKFSACPcpLYobfW2j9k3tCVxxbMm8iLzTcKWxGI1KQMX5AFy+c6fmUT5eFxLG5xIsCzvbi6enzCwnacY2kJWK9depjksC62zrHMsqi+9gWzzwKBgQCI92/Wj4iq4ZkL+vabdXDKFeVBEt/yNi9GqJXWimMBkwPNoKAcof4BOeEeSORqXs9BVGhsI5mc8ASACihXA9Osh3SzpqqSfji8U4ajrZ487T4ZsJ96C15+VZh1FoJlWkAK33UccPWnSkpYGylyQ07dH+HahDb4D6QHyd5mZtZj2wKBgBdJywxC4LIIWYTFc8/jFulM5Ts5EahC9cSJJPKVkeuwZ33AVeDq31EVm6/wQs2lNGAR9cn4IACqzxCxd5c7AX2dkERS7FTH6PquVkxNRpFVgXvcrT5KKx7NlDmV864SJvWRySVXORgRzkrB4OjkglCZZL5437SUGM2YkKsfIQGvAoGAIy4RSWMd3XxreQdBnIqVOTljTVzcjPgHNelXFndfDSvzdMw9znCktM9VcFM0Yzrvayu14hg7o9nG35o41yZF6EE6oZT5kP+Bs6+ZbDhDpmbKhl9WfTGvIv+QqhMFSIY6uR03y6pUnNYl96YebkAQ1Ww9vwCOjPUR6WQ1LDeBInE=
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgnX8VVDMs1ATz1p0vENd/ETiucQJp9ljJWDOAz/lyjRO9xmv1oLMcpVbFy/9TnnrM9tscTkqjit2NWyKChoTcjd704eJOaW4nAp49bOGKGhQY4dcRz6gJQG6TRjMYFk7RAXPMlqhZvq4KnngL67M3xAXbCQlTeBdcPM6zK8OVLgX+Dt2bcN/kBIg67TOwgjhCKjnbIYl7r4684PleTm8ilZMPqoATKNNQXhtpIc3ezUpmTtj3mVVjHLUwSTCgSmSmUU9kNEkePuUSguVTFgNHmFmYq4x1PcF0YDiFtvs0ksNEprUPYJeHF46P0yCqkfJqCqpr1/RnrRmcQSoxmR0CwIDAQAB
+  notify_url: http://w2mkev.natappfree.cc/payed/notify
+  return_url: http://member.gulimall.com/memberOrder.html
+  sign_type: RSA2
+  charset: utf-8
+  gatewayUrl: https://openapi.alipaydev.com/gateway.do

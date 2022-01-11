@@ -7,6 +7,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 /**
+ *  配置跨域(所有请求都可通过)
  * @author: lvbo
  * @date: 2021/7/6 10:09
  * @description:

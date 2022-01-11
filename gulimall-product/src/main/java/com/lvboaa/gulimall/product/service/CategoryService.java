@@ -3,7 +3,9 @@ package com.lvboaa.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lvboaa.common.utils.PageUtils;
 import com.lvboaa.gulimall.product.entity.CategoryEntity;
+import com.lvboaa.gulimall.product.vo.Catelog2Vo;
 
+import javax.jws.Oneway;
 import java.util.List;
 import java.util.Map;
 
@@ -21,5 +23,11 @@ public interface CategoryService extends IService<CategoryEntity> {
     List<CategoryEntity> listWithTree();
 
     void removeMenuByIds(List<Long> asList);
+
+    void testUpdate();
+
+    List<CategoryEntity> getLevel1Category();
+
+    Map<String, List<Catelog2Vo>> getCatalogJson();
 }
 

@@ -5,11 +5,7 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.lvboaa.gulimall.coupon.entity.SeckillSessionEntity;
 import com.lvboaa.gulimall.coupon.service.SeckillSessionService;
@@ -30,6 +26,12 @@ import com.lvboaa.common.utils.R;
 public class SeckillSessionController {
     @Autowired
     private SeckillSessionService seckillSessionService;
+
+
+    @GetMapping("/getLatest3DaysSession")
+    public R getLatest3DaysSession(){
+        return R.ok().setData(seckillSessionService.getLatest3DaysSession());
+    }
 
     /**
      * 列表

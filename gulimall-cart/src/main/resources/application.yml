@@ -1,0 +1,44 @@
+server:
+  port: @cart.port@
+
+spring:
+  application:
+    name: gulimall-cart
+  cloud:
+    nacos:
+      discovery:
+        server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8721  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  thymeleaf:
+    cache: false
+  session:
+    store-type: redis
+  zipkin:
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+    sleuth:
+      sampler:
+        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
+
+logging:
+  level:
+    com.lvboaa.gulimall: debug
+
+#配置线程池
+gulimall:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10
+
+feign:
+  sentinel:
+    enabled: true

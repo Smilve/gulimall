@@ -23,7 +23,7 @@ public class RRException extends RuntimeException {
 		super(msg);
 		this.msg = msg;
 	}
-	
+
 	public RRException(String msg, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
@@ -34,7 +34,13 @@ public class RRException extends RuntimeException {
 		this.msg = msg;
 		this.code = code;
 	}
-	
+
+	public RRException(BizCodeEnum codeEnum) {
+		super(codeEnum.getMessage());
+		this.msg = codeEnum.getMessage();
+		this.code = codeEnum.getCode();
+	}
+
 	public RRException(String msg, int code, Throwable e) {
 		super(msg, e);
 		this.msg = msg;

@@ -1,19 +1,46 @@
 spring:
   datasource:
-    username: root
-    password: roottoor
-    url: jdbc:mysql://47.98.137.243:3306/gulimall_ums
+    username: @spring.datasource.username@
+    password: @spring.datasource.password@
+    url: @spring.datasource.url@/gulimall_ums?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.137.243:8848
+        server-addr: @nacos-server-addr@
+    sentinel:
+      transport:
+        port: 8723  # 微服务和控制台传输数据的端口，只要不被占用即可
+        dashboard: @sentinel-dashboard-addr@
   application:
     name: gulimall-member
+  session:
+    store-type: redis
+  redis:
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+  thymeleaf:
+    cache: false
+  zipkin:
+    base-url: @zipkin.baseUrl@  # zipkin服务器地址
+    discovery-client-enabled: false # 关闭服务发现，否则springcloud会把zipkin的url当成服务器名
+    sender:
+      type: web # 设置使用http的方式传输数据
+    sleuth:
+      sampler:
+        probability: 1  # 设置抽样采集率为100%，默认是0.1，也就是10%的采样请求数据
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml  # classpath* 表示不止扫描本项目的类路径，还扫描引用的jar包的类路径
   global-config:
     db-config:
       id-type: auto   # 主键生成策略，自增   也可以在entity类的 @TableId配置
 server:
-  port: 8000
+  port: @member.port@
+logging:
+  level:
+    com.lvboaa.gulimall: debug
+
+feign:
+  sentinel:
+    enabled: true
